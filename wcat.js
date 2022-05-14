@@ -1,8 +1,10 @@
 //Commands 1) node wcat.js filepath => displays the contents of a file in terminal
 //Command 2) node wcat.js filepath1 filepath2 => displays the contents of all files in terminal
 //in concatinated form in given order
-//Command 3) node wcat.js -s filepath1 or node wcat.js filepath1 filepath2 => removes the extra line 
-//space and leave only single line space   
+//Command 3) node wcat.js -s filepath1 or node wcat.js -s filepath1 filepath2 => removes the extra line 
+//space and leave only single line space  
+//Command 4) node wcat.js -n filepath1 or node wcat.js -n filepath1 filepath2 => numbering to all lines
+//Command 5) node wcat.js -b filepath1 or node wcat.js -b filepath1 filepath2 => numbering to non-empty lines
 
 const fs = require("fs");
 let inputarr = process.argv.slice(2);
@@ -33,7 +35,6 @@ for(let i = 0; i < filesarr.length; i++){
     }
 }
 //===============>content read and appending starts<===============
-
 let content = "";
 for(let i = 0; i < filesarr.length; i++){
     let filecontent = fs.readFileSync(filesarr[i]);
@@ -44,7 +45,7 @@ console.log(content);
 let contentarr = content.split("\r\n");
 //console.log(contentarr);
 
-//check is -s is present or not
+//===============>check is -s is present or not<===============
 let temparr = [];
 let isSpresent = optionsarr.includes("-s");
 if(isSpresent){
@@ -58,7 +59,7 @@ if(isSpresent){
 }
 console.table(contentarr);
 
-//push everything in temp except null
+//===============>push everything in temp except null<===============
 for(let i = 0; i < contentarr.length; i++){
     if(contentarr[i] != null){
         temparr.push(contentarr[i]);
@@ -68,13 +69,12 @@ console.log("data after removing extra lines\n", temparr);
 contentarr = temparr;
 }
 
-
 let indexofN = optionsarr.indexOf("-n");
 let indexofB = optionsarr.indexOf("-b");
-//if -n or -b is not found, -1 is returned
+//===============>if -n or -b is not found, -1 is returned<===============
 
 let finaloption = "";
-//if both -n and -b are present
+//===============>if both -n and -b are present<===============
 if(indexofN != -1 && indexofB != -1){
     if(indexofN < indexofB){
         finaloption = "-n";
@@ -84,7 +84,7 @@ if(indexofN != -1 && indexofB != -1){
     }
 }
 
-//either -n is present or -b is present
+//===============>either -n is present or -b is present<===============
 else{
     if(indexofN != -1){
         finaloption = "-n";
@@ -94,7 +94,7 @@ else{
     }
 }
 
-//calling of functions by evaluating finaloption
+//===============>calling of functions by evaluating finaloption<===============
 if(finaloption == "-n"){
     modifyContentbyN();
 }
